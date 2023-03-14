@@ -6,7 +6,7 @@
 <script lang="ts">
   import type { AnyLayer, GeoJSONSourceRaw } from 'mapbox-gl';
   import type { PropType, Ref } from 'vue';
-  import { defineComponent, onMounted, ref, watch } from 'vue';
+  import { defineComponent, onMounted, onBeforeUnmount, ref, watch } from 'vue';
   import { injectStrict, MapKey } from '../../utils';
 
   export default defineComponent({
@@ -71,6 +71,13 @@
 
       onMounted(() => {
         addLayer();
+      });
+
+      onBeforeUnmount(() => {
+        if (map.value.getLayer(props.layerId)) {
+          map.value.removeLayer(props.layerId);
+          map.value.removeSource(props.sourceId);
+        }
       });
 
       /**
