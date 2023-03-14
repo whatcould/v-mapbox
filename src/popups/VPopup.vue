@@ -5,7 +5,7 @@
 </template>
 <script lang="ts">
   import type { LngLatLike, Map, Marker, PopupOptions } from 'mapbox-gl';
-  import { Popup } from 'mapbox-gl';
+  import type { PropType, Ref } from 'vue';
   import type { PropType, Ref, SetupContext } from 'vue';
   import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
   import { popupEvents } from '../constants/events';
@@ -51,6 +51,7 @@
 
       onMounted(() => {
         if (loaded.value) {
+          setPopupContent();
           setPopupCoordinates();
           addToMarker();
           listenPopupEvents();
@@ -66,14 +67,19 @@
       });
 
       /**
+       * Sets the HTML content for the popup
+       *
+       * @returns {void}
+       */
+      function setPopupContent(): void {
+        popup.setDOMContent(content.value as Node);
+      }
+      /**
        * Set popup coordinates
        *
        * @returns {void}
        */
       function setPopupCoordinates(): void {
-        const { outerHTML }: { outerHTML: string } =
-          content.value!.children[0].children[0];
-        popup.setHTML(outerHTML);
         popup.setLngLat(props.coordinates);
       }
 
