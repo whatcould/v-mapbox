@@ -1,7 +1,7 @@
 /// <reference types="@types/mapbox-gl" />
 import type { LngLatLike, MarkerOptions, PopupOptions } from 'mapbox-gl';
 import { Marker } from 'mapbox-gl';
-import type { PropType } from 'vue';
+import type { PropType, Ref } from 'vue';
 declare const _default: import('vue').DefineComponent<
   {
     options: {
@@ -26,7 +26,9 @@ declare const _default: import('vue').DefineComponent<
     };
   },
   {
-    marker: Marker;
+    isMarkerAvailable: Ref<boolean>;
+    marker: Ref<Marker>;
+    setSlotRef: (el: HTMLElement) => void;
   },
   unknown,
   {},

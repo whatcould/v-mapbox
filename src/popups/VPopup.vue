@@ -5,8 +5,8 @@
 </template>
 <script lang="ts">
   import type { LngLatLike, Map, Marker, PopupOptions } from 'mapbox-gl';
-  import type { PropType, Ref } from 'vue';
   import type { PropType, Ref, SetupContext } from 'vue';
+  import { Popup } from 'mapbox-gl';
   import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
   import { popupEvents } from '../constants/events';
   import { injectStrict, MapKey } from '../utils';

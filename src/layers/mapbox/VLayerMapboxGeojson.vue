@@ -4,10 +4,15 @@
   </div>
 </template>
 <script lang="ts">
-  import type { AnyLayer, GeoJSONSourceRaw } from 'mapbox-gl';
+  import type {
+    AnyLayer,
+    GeoJSONSourceRaw,
+    MapLayerEventType,
+  } from 'mapbox-gl';
   import type { PropType, Ref } from 'vue';
   import { defineComponent, onMounted, onBeforeUnmount, ref, watch } from 'vue';
   import { injectStrict, MapKey } from '../../utils';
+  import { mapLayerEvents } from '../../constants/events';
 
   export default defineComponent({
     name: 'VLayerMapboxGeojson',
@@ -37,9 +42,10 @@
         required: false,
       },
     },
-    setup(props) {
+    setup(props, { emit }) {
       let map = injectStrict(MapKey);
       let loaded: Ref<boolean> = ref(false);
+      let events: Ref<Array<keyof MapLayerEventType>> = ref(mapLayerEvents);
 
       const layer = {
         ...props.layer,
@@ -71,7 +77,22 @@
 
       onMounted(() => {
         addLayer();
+        listenLayerEvents();
       });
+
+      /**
+       * Listen to layer events
+       *
+       * @returns {void}
+       */
+      function listenLayerEvents(): void {
+        // Listen for events
+        events.value.forEach((e) => {
+          map.value.on(e, props.layerId, (evt) => {
+            emit(e, evt);
+          });
+        });
+      }
 
       onBeforeUnmount(() => {
         if (map.value.getLayer(props.layerId)) {
