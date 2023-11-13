@@ -90,7 +90,7 @@
        * @returns {void}
        */
       function addToMarker(): void {
-        if (props.marker) {
+        if (props.marker && Object.keys(props.marker).length !== 0) {
           props.marker.setPopup(popup);
         } else {
           popup.addTo(map.value);
