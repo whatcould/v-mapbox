@@ -617,6 +617,10 @@ var script$7 = defineComponent({
         }
       });
 
+      watch(() => props.source, (source, prevSource) => {
+        map.value.getSource(props.sourceId).setData(source.data);
+      });
+
       onMounted(() => {
         addLayer();
         listenLayerEvents();
@@ -637,13 +641,15 @@ var script$7 = defineComponent({
       }
 
       onBeforeUnmount(() => {
+        removeLayer();
+      });
+
+      function removeLayer() {
         if (map.value.getLayer(props.layerId)) {
           map.value.removeLayer(props.layerId);
           map.value.removeSource(props.sourceId);
         }
-      });
-
-      /**
+      }      /**
        * Re–adds the layer when style changed
        *
        * @returns {void}
