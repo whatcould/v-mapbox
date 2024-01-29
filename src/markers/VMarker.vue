@@ -72,6 +72,10 @@
         }
       });
 
+      watch(() => props.coordinates, () => {
+        setMarkerCoordinates(marker.value)
+      });
+
       onMounted(() => {
         if (loaded.value) {
           if (slotRef.value !== null) {
